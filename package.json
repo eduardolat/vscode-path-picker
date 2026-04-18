@@ -95,7 +95,9 @@
   },
   "homepage": "https://github.com/eduardolat/vscode-path-picker#readme",
   "scripts": {
-    "package": "rm -rf *.vsix && vsce package",
+    "dev": "rm -rf ./dist && node esbuild.js --watch",
+    "build": "rm -rf ./dist && node esbuild.js --production",
+    "package": "npm run build && rm -rf *.vsix && vsce package",
     "package:ls": "vsce ls",
     "format": "npm run format:dprint && npm run format:biome",
     "format:dprint": "dprint fmt --config ./dprint.json --log-level warn",
