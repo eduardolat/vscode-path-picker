@@ -1,8 +1,58 @@
 {
   "name": "vscode-path-picker",
+  "displayName": "Path Picker",
   "version": "0.1.0",
-  "description": "Fuzzy find and copy path of a file in VSCode",
-  "main": "index.js",
+  "description": "Pick a file or folder and copy its path in VSCode",
+  "main": "./src/index.js",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "extensionKind": [
+    "ui"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "pathPicker.copyPath",
+        "title": "Path Picker: Copy Path (File or Folder)"
+      },
+      {
+        "command": "pathPicker.copyFilePath",
+        "title": "Path Picker: Copy File Path"
+      },
+      {
+        "command": "pathPicker.copyFolderPath",
+        "title": "Path Picker: Copy Folder Path"
+      }
+    ],
+    "configuration": {
+      "title": "Path Picker",
+      "properties": {
+        "pathPicker.pathStyle": {
+          "type": "string",
+          "enum": [
+            "relative",
+            "absolute"
+          ],
+          "default": "relative",
+          "scope": "application",
+          "ignoreSync": true,
+          "description": "Controls if copied paths are relative to workspace root or absolute OS paths."
+        },
+        "pathPicker.prefix": {
+          "type": "string",
+          "default": "@",
+          "scope": "application",
+          "ignoreSync": true,
+          "description": "Prefix added before the copied path. Use an empty string to disable it."
+        }
+      }
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eduardolat/vscode-path-picker.git"
@@ -22,7 +72,8 @@
     "lint": "npm run lint:dprint && npm run lint:biome",
     "lint:dprint": "dprint check --config ./dprint.json --log-level warn",
     "lint:biome": "biome check --config-path ./biome.json --log-level warn --no-errors-on-unmatched .",
-    "ci": "npm run lint"
+    "test": "node --test",
+    "ci": "npm run lint && npm run test"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.12",
