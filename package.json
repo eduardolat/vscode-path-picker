@@ -1,0 +1,21 @@
+{
+  "name": "vscode-path-picker",
+  "version": "0.1.0",
+  "description": "Fuzzy find and copy path of a file in VSCode",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eduardolat/vscode-path-picker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/eduardolat/vscode-path-picker/issues"
+  },
+  "homepage": "https://github.com/eduardolat/vscode-path-picker#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
