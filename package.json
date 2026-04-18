@@ -2,7 +2,7 @@
   "name": "vscode-path-picker",
   "displayName": "Path Picker",
   "version": "0.1.0",
-  "description": "Pick a file or folder and copy its path in VSCode",
+  "description": "Quickly pick a file or folder in VS Code and copy its relative or absolute path with an optional prefix",
   "main": "./src/index.js",
   "engines": {
     "vscode": "^1.90.0"
@@ -10,7 +10,11 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:pathPicker.copyPath",
+    "onCommand:pathPicker.copyFilePath",
+    "onCommand:pathPicker.copyFolderPath"
+  ],
   "extensionKind": [
     "ui"
   ],
@@ -18,14 +22,17 @@
     "commands": [
       {
         "command": "pathPicker.copyPath",
+        "category": "Path Picker",
         "title": "Path Picker: Copy Path (File or Folder)"
       },
       {
         "command": "pathPicker.copyFilePath",
+        "category": "Path Picker",
         "title": "Path Picker: Copy File Path"
       },
       {
         "command": "pathPicker.copyFolderPath",
+        "category": "Path Picker",
         "title": "Path Picker: Copy Folder Path"
       }
     ],
@@ -57,8 +64,29 @@
     "type": "git",
     "url": "git+https://github.com/eduardolat/vscode-path-picker.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "absolute path",
+    "clipboard",
+    "copy path",
+    "file path",
+    "file picker",
+    "folder path",
+    "path",
+    "path alias",
+    "path copy",
+    "path utilities",
+    "path picker",
+    "productivity",
+    "relative path",
+    "resource picker",
+    "vscode",
+    "vscode clipboard",
+    "vscode extension",
+    "vscode path",
+    "workspace path",
+    "workspace root"
+  ],
+  "author": "Luis Eduardo Jerez",
   "license": "MIT",
   "type": "commonjs",
   "bugs": {
