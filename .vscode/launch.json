@@ -2,9 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run VDL Extension",
+      "name": "Run Path Picker Extension",
       "type": "extensionHost",
       "request": "launch",
+      "preLaunchTask": "npm: build",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}",
         "${workspaceFolder}"
