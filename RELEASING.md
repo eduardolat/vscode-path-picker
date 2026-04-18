@@ -1,104 +1,127 @@
-# Path Picker VS Code Extension Release Instructions
+# Path Picker VS Code Extension Release Guide
 
-This document defines the manual release process for the Path Picker VS Code extension.
+This document describes a professional, repeatable release process for the Path Picker VS Code extension.
+
+The project includes first-class release scripts:
+
+- `npm run package` -> validates, inspects package contents, and builds a `.vsix`
+- `npm run package:ls` -> prints exactly what will be included in the VSIX
 
 ## Prerequisites
 
-- Ensure you are in the repository root.
-- Ensure you have permission to publish on:
-  - Visual Studio Marketplace publisher account
-  - Open VSX account (if publishing there)
-- Ensure your local branch is up to date and CI is passing.
+Before starting a release:
+
+- Work from the repository root.
+- Ensure your branch is up to date with `main`.
+- Ensure you have publisher permissions for:
+  - Visual Studio Marketplace
+  - Open VSX (optional, if you publish there)
+- Ensure local environment is healthy:
+
+  ```bash
+  npm ci
+  npm run ci
+  ```
 
 ---
 
-## Phase 1: Versioning and Documentation
+## Phase 1: Prepare Version and Docs
 
-1. **Update version**
-   - Edit `package.json`.
-   - Bump `version` using Semantic Versioning (`MAJOR.MINOR.PATCH`).
-   - Do not use a `v` prefix in `package.json`.
+1. **Bump version in `package.json`**
+   - Follow Semantic Versioning (`MAJOR.MINOR.PATCH`).
+   - Example: `0.1.0` -> `0.1.1`
 
-2. **Update changelog**
-   - Edit `CHANGELOG.md`.
-   - Add a new section for the release version with date and notable changes.
+2. **Update `CHANGELOG.md`**
+   - Add a new section at the top.
+   - Include version, date, and notable user-facing changes.
 
-3. **Review README**
-   - Ensure `README.md` reflects current user-facing behavior.
-   - Verify command names and settings match `package.json`.
+3. **Refresh `README.md` if needed**
+   - Keep command names and command IDs aligned with `package.json`.
+   - Keep settings names aligned with contributed configuration.
 
 4. **Commit release prep**
-   - Commit version and documentation updates.
-   - Example: `chore(release): prepare v0.1.1`
+   - Suggested commit message:
 
----
-
-## Phase 2: Validate and Package
-
-1. **Run release checks**
-
-   ```bash
-   npm ci
-   npm run ci
-   ```
-
-2. **Create VSIX package**
-
-   ```bash
-   npx @vscode/vsce package
-   ```
-
-3. **Verify artifact**
-   - Confirm a file named `vscode-path-picker-X.Y.Z.vsix` was generated.
-   - Optionally inspect the package content before publishing:
-
-     ```bash
-     npx @vscode/vsce ls
+     ```text
+     chore(release): prepare vX.Y.Z
      ```
 
 ---
 
-## Phase 3: GitHub Release
+## Phase 2: Build the VSIX Artifact
 
-1. **Create tag**
-   - Use `vX.Y.Z` format (example: `v0.1.0`).
+Use the packaged workflow (recommended):
 
-2. **Create GitHub release**
-   - Title: `Path Picker vX.Y.Z`
-   - Description: copy highlights from `CHANGELOG.md` for that version.
-   - Upload the generated `.vsix` as a release asset.
+```bash
+npm run package
+```
 
-3. **Publish release**
-   - Publish the release after confirming tag and assets are correct.
+What this does:
+
+1. Runs full validation (`npm run ci`).
+2. Runs package content inspection (`npm run package:ls`).
+3. Produces the VSIX (`vsce package`).
+
+### Optional: Inspect package contents separately
+
+```bash
+npm run package:ls
+```
+
+Use this to confirm only expected files are included. Packaging content is controlled by `.vscodeignore`.
+
+### Expected output
+
+After successful packaging, a file like this appears in the repository root:
+
+- `vscode-path-picker-X.Y.Z.vsix`
 
 ---
 
-## Phase 4: Marketplace Publishing
+## Phase 3: Create GitHub Release
+
+1. **Create and push tag**
+   - Tag format: `vX.Y.Z`
+   - Example: `v0.1.1`
+
+2. **Draft release on GitHub**
+   - Title: `Path Picker vX.Y.Z`
+   - Notes: summarize the same highlights from `CHANGELOG.md`.
+   - Upload artifact: `vscode-path-picker-X.Y.Z.vsix`
+
+3. **Publish release**
+   - Double-check tag, title, notes, and attached VSIX before publishing.
+
+---
+
+## Phase 4: Publish to Marketplaces
 
 ### Visual Studio Marketplace
 
-1. Go to the [VS Code Marketplace management portal](https://marketplace.visualstudio.com/manage).
-2. Open your publisher account.
-3. Select the `Path Picker` extension and choose **Update**.
-4. Upload the generated `.vsix`.
-5. Wait for validation and publication to complete.
+1. Open the [VS Code Marketplace Publisher Management](https://marketplace.visualstudio.com/manage).
+2. Select your publisher.
+3. Open the `Path Picker` extension entry.
+4. Choose **Update** and upload `vscode-path-picker-X.Y.Z.vsix`.
+5. Wait for validation and propagation.
 
-### Open VSX
+### Open VSX (optional)
 
-1. Go to [Open VSX extension publishing](https://open-vsx.org/user-settings/extensions).
-2. Publish a new version with the same `.vsix`.
+1. Open [Open VSX extension publishing](https://open-vsx.org/user-settings/extensions).
+2. Publish a new version using the same VSIX file.
 
 ---
 
-## Post-release checklist
+## Phase 5: Post-release Verification
 
-- Verify the new version is visible in the Marketplace listing.
-- Verify installation/update works in a clean VS Code profile.
-- Smoke test the three commands:
-  - `Path Picker: Copy Path (File or Folder)`
-  - `Path Picker: Copy File Path`
-  - `Path Picker: Copy Folder Path`
-- Confirm settings behavior for:
+After publication:
+
+- Confirm the new version is visible in marketplace listings.
+- Install/update in a clean VS Code profile.
+- Smoke test all commands:
+  - `Path Picker: Copy Path (File or Folder)` (`pathPicker.copyPath`)
+  - `Path Picker: Copy File Path` (`pathPicker.copyFilePath`)
+  - `Path Picker: Copy Folder Path` (`pathPicker.copyFolderPath`)
+- Validate settings behavior:
   - `pathPicker.pathStyle`
   - `pathPicker.prefix`
 
