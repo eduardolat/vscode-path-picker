@@ -17,5 +17,9 @@
   "homepage": "https://github.com/eduardolat/vscode-path-picker#readme",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.12",
+    "dprint": "0.54.0"
   }
 }
