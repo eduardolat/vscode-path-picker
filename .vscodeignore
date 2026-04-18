@@ -1,0 +1,9 @@
+# Exclude everything
+**/*
+
+# Include only these files
+!LICENSE
+!CHANGELOG.md
+!README.md
+!package.json
+!src/
