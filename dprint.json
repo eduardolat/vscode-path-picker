@@ -1,0 +1,21 @@
+{
+  "json": {},
+  "markdown": {},
+  "yaml": {},
+  "excludes": [
+    "**/*.js",
+    "**/*.ts",
+    "**/*-lock.json",
+    "node_modules/**",
+    "node_modules/**",
+    "dist/**",
+    "tmp/**",
+    "temp/**",
+    "site/**"
+  ],
+  "plugins": [
+    "https://plugins.dprint.dev/json-0.21.1.wasm",
+    "https://plugins.dprint.dev/markdown-0.21.1.wasm",
+    "https://plugins.dprint.dev/g-plane/pretty_yaml-v0.6.0.wasm"
+  ]
+}
