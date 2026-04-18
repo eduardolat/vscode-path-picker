@@ -3,23 +3,58 @@ const { buildOutputPath } = require("./path-utils");
 
 const EXTENSION_NAMESPACE = "pathPicker";
 
+/**
+ * Function signature used by copy flows to select a target URI.
+ *
+ * @callback UriPicker
+ * @returns {Promise<vscode.Uri | undefined>} Selected URI, or `undefined` if cancelled.
+ */
+
+/**
+ * Reads the configuration section owned by this extension.
+ *
+ * @returns {vscode.WorkspaceConfiguration} Path Picker configuration object.
+ */
 function getExtensionConfiguration() {
   return vscode.workspace.getConfiguration(EXTENSION_NAMESPACE);
 }
 
+/**
+ * Returns the configured output style for copied paths.
+ *
+ * @returns {"relative" | "absolute"} Path output style.
+ */
 function getPathStyle() {
   const value = getExtensionConfiguration().get("pathStyle", "relative");
   return value === "absolute" ? "absolute" : "relative";
 }
 
+/**
+ * Returns the configured prefix to prepend to copied paths.
+ *
+ * @returns {string} Output prefix.
+ */
 function getPrefix() {
   return getExtensionConfiguration().get("prefix", "@");
 }
 
+/**
+ * Resolves the workspace folder that owns a selected URI.
+ *
+ * @param {vscode.Uri} targetUri - Selected file or folder URI.
+ * @returns {vscode.WorkspaceFolder | undefined} Workspace folder for the URI.
+ */
 function getWorkspaceFolderForUri(targetUri) {
   return vscode.workspace.getWorkspaceFolder(targetUri);
 }
 
+/**
+ * Copies a selected URI path to the clipboard using extension settings.
+ *
+ * @param {vscode.Uri} targetUri - Selected file or folder URI.
+ * @returns {Promise<void>} Completes after clipboard copy and user feedback.
+ * @throws {Error} When the URI is not inside any open workspace folder.
+ */
 async function copyUriPathToClipboard(targetUri) {
   const workspaceFolder = getWorkspaceFolderForUri(targetUri);
 
@@ -40,6 +75,11 @@ async function copyUriPathToClipboard(targetUri) {
   await vscode.window.showInformationMessage(`Copied path: ${valueToCopy}`);
 }
 
+/**
+ * Opens a native file picker and returns the selected URI.
+ *
+ * @returns {Promise<vscode.Uri | undefined>} Selected file URI, or `undefined` if cancelled.
+ */
 async function pickFileUri() {
   const pickedUri = await vscode.window.showOpenDialog({
     canSelectFiles: true,
@@ -55,6 +95,11 @@ async function pickFileUri() {
   return pickedUri[0];
 }
 
+/**
+ * Opens a native folder picker and returns the selected URI.
+ *
+ * @returns {Promise<vscode.Uri | undefined>} Selected folder URI, or `undefined` if cancelled.
+ */
 async function pickFolderUri() {
   const pickedUri = await vscode.window.showOpenDialog({
     canSelectFiles: false,
@@ -70,6 +115,12 @@ async function pickFolderUri() {
   return pickedUri[0];
 }
 
+/**
+ * Prompts the user to choose between file and folder selection,
+ * then returns a URI from the corresponding picker.
+ *
+ * @returns {Promise<vscode.Uri | undefined>} Selected URI, or `undefined` if cancelled.
+ */
 async function pickPathUri() {
   const quickPick = await vscode.window.showQuickPick(
     [
@@ -99,6 +150,12 @@ async function pickPathUri() {
   return pickFileUri();
 }
 
+/**
+ * Runs the shared command flow for selecting a resource and copying its path.
+ *
+ * @param {UriPicker} pickUri - Selection strategy used by a command.
+ * @returns {Promise<void>} Completes after the command flow finishes.
+ */
 async function runCopyFlow(pickUri) {
   if (
     !vscode.workspace.workspaceFolders ||
@@ -124,6 +181,12 @@ async function runCopyFlow(pickUri) {
   }
 }
 
+/**
+ * Activates the extension and registers its commands.
+ *
+ * @param {vscode.ExtensionContext} context - VS Code extension context.
+ * @returns {void}
+ */
 function activate(context) {
   context.subscriptions.push(
     vscode.commands.registerCommand("pathPicker.copyFilePath", async () => {
@@ -144,6 +207,11 @@ function activate(context) {
   );
 }
 
+/**
+ * Deactivates the extension.
+ *
+ * @returns {void}
+ */
 function deactivate() {}
 
 module.exports = {
