@@ -109,6 +109,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.12",
     "@vscode/vsce": "3.9.1",
-    "dprint": "0.54.0"
+    "dprint": "0.54.0",
+    "esbuild": "0.28.0"
   }
 }
