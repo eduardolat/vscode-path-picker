@@ -13,9 +13,13 @@ Path Picker is a VS Code extension that helps you quickly pick a file or folder 
 
 ## Commands
 
-- `Path Picker: Copy Path (File or Folder)`
-- `Path Picker: Copy File Path`
-- `Path Picker: Copy Folder Path`
+Use these command IDs in `keybindings.json` or other command integrations:
+
+| Command Palette title                     | Command ID                  |
+| ----------------------------------------- | --------------------------- |
+| `Path Picker: Copy Path (File or Folder)` | `pathPicker.copyPath`       |
+| `Path Picker: Copy File Path`             | `pathPicker.copyFilePath`   |
+| `Path Picker: Copy Folder Path`           | `pathPicker.copyFolderPath` |
 
 You can run these from the Command Palette and assign custom keyboard shortcuts.
 
@@ -50,4 +54,11 @@ Configure in VS Code Settings:
 
 ## Changelog
 
-See [CHANGELOG.md](./CHANGELOG.md) for release history.
+Here are the latest versions from the changelog (up to 5). To see all versions, go to [CHANGELOG.md](https://github.com/eduardolat/vscode-path-picker/blob/main/CHANGELOG.md).
+
+- `0.1.0` - 2026-04-18
+  - Initial release of Path Picker for VS Code.
+  - Added commands to pick and copy file or folder paths.
+  - Added support for relative and absolute output path styles.
+  - Added configurable path prefix with `@` as default.
+  - Added local-only configuration behavior for remote workflows.
