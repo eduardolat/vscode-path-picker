@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Quickly pick a file or folder in VS Code and copy its relative or absolute path with an optional prefix",
   "icon": "logo.png",
-  "main": "./src/index.js",
+  "main": "./dist/extension.js",
   "engines": {
     "vscode": "^1.90.0"
   },
