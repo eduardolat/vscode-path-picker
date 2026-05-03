@@ -206,12 +206,6 @@ function activate(context) {
     vscode.commands.registerCommand("pathPicker.copyPath", async () => {
       await runCopyFlow(pickAnyUri);
     }),
-    vscode.commands.registerCommand("pathPicker.copyFilePath", async () => {
-      await runCopyFlow(pickAnyUri);
-    }),
-    vscode.commands.registerCommand("pathPicker.copyFolderPath", async () => {
-      await runCopyFlow(pickAnyUri);
-    }),
   );
 }
 
