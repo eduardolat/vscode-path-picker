@@ -39,6 +39,29 @@ function getPrefix() {
 }
 
 /**
+ * Builds a glob pattern from VS Code's file/search exclusion settings.
+ * This respects .gitignore, node_modules, and other user-configured excludes.
+ *
+ * @returns {string | undefined} Combined exclude glob pattern, or undefined if none.
+ */
+function getExcludeGlob() {
+  const searchExclude =
+    vscode.workspace.getConfiguration("search").get("exclude") || {};
+  const filesExclude =
+    vscode.workspace.getConfiguration("files").get("exclude") || {};
+  const combined = { ...searchExclude, ...filesExclude };
+  const patterns = Object.keys(combined).filter(
+    (key) => combined[key] === true,
+  );
+
+  if (patterns.length === 0) {
+    return undefined;
+  }
+
+  return `{${patterns.join(",")}}`;
+}
+
+/**
  * Resolves the workspace folder that owns a selected URI.
  *
  * @param {vscode.Uri} targetUri - Selected file or folder URI.
@@ -76,43 +99,96 @@ async function copyUriPathToClipboard(targetUri) {
 }
 
 /**
- * Opens a native file picker and returns the selected URI.
+ * Shows a fuzzy search quick pick for files in the workspace.
  *
  * @returns {Promise<vscode.Uri | undefined>} Selected file URI, or `undefined` if cancelled.
  */
 async function pickFileUri() {
-  const pickedUri = await vscode.window.showOpenDialog({
-    canSelectFiles: true,
-    canSelectFolders: false,
-    canSelectMany: false,
-    openLabel: "Copy path",
-  });
+  const exclude = getExcludeGlob();
 
-  if (!pickedUri || pickedUri.length === 0) {
+  const files = await vscode.window.withProgress(
+    {
+      location: vscode.ProgressLocation.Notification,
+      title: "Path Picker: Scanning files...",
+      cancellable: false,
+    },
+    () => vscode.workspace.findFiles("**/*", exclude),
+  );
+
+  if (files.length === 0) {
+    await vscode.window.showWarningMessage("No files found in the workspace.");
     return undefined;
   }
 
-  return pickedUri[0];
+  const items = files.map((uri) => ({
+    label: vscode.workspace.asRelativePath(uri),
+    uri,
+  }));
+
+  const selection = await vscode.window.showQuickPick(items, {
+    title: "Path Picker: Select File",
+    placeHolder: "Type to fuzzy search files...",
+  });
+
+  return selection?.uri;
 }
 
 /**
- * Opens a native folder picker and returns the selected URI.
+ * Shows a fuzzy search quick pick for folders in the workspace.
  *
  * @returns {Promise<vscode.Uri | undefined>} Selected folder URI, or `undefined` if cancelled.
  */
 async function pickFolderUri() {
-  const pickedUri = await vscode.window.showOpenDialog({
-    canSelectFiles: false,
-    canSelectFolders: true,
-    canSelectMany: false,
-    openLabel: "Copy path",
-  });
+  const exclude = getExcludeGlob();
 
-  if (!pickedUri || pickedUri.length === 0) {
+  const files = await vscode.window.withProgress(
+    {
+      location: vscode.ProgressLocation.Notification,
+      title: "Path Picker: Scanning folders...",
+      cancellable: false,
+    },
+    () => vscode.workspace.findFiles("**/*", exclude),
+  );
+
+  const folderMap = new Map();
+
+  for (const file of files) {
+    const relativePath = vscode.workspace.asRelativePath(file);
+    const parts = relativePath.split("/");
+
+    let currentPath = "";
+    for (let i = 0; i < parts.length - 1; i++) {
+      currentPath += (currentPath ? "/" : "") + parts[i];
+      if (!folderMap.has(currentPath)) {
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(file);
+        if (workspaceFolder) {
+          folderMap.set(
+            currentPath,
+            vscode.Uri.joinPath(workspaceFolder.uri, currentPath),
+          );
+        }
+      }
+    }
+  }
+
+  if (folderMap.size === 0) {
+    await vscode.window.showWarningMessage(
+      "No folders found in the workspace.",
+    );
     return undefined;
   }
 
-  return pickedUri[0];
+  const items = Array.from(folderMap.entries()).map(([path, uri]) => ({
+    label: path,
+    uri,
+  }));
+
+  const selection = await vscode.window.showQuickPick(items, {
+    title: "Path Picker: Select Folder",
+    placeHolder: "Type to fuzzy search folders...",
+  });
+
+  return selection?.uri;
 }
 
 /**
