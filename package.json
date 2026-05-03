@@ -1,6 +1,6 @@
 {
-  "name": "path-picker",
-  "displayName": "Path Picker",
+  "name": "quick-path-picker",
+  "displayName": "Quick Path Picker",
   "version": "0.1.0",
   "description": "Fuzzy-search any file or folder in your workspace and copy its relative or absolute path with an optional prefix",
   "icon": "./assets/logo.png",
@@ -12,7 +12,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:pathPicker.copyPath"
+    "onCommand:quickPathPicker.copyPath"
   ],
   "extensionKind": [
     "ui"
@@ -20,15 +20,15 @@
   "contributes": {
     "commands": [
       {
-        "command": "pathPicker.copyPath",
-        "category": "Path Picker",
+        "command": "quickPathPicker.copyPath",
+        "category": "Quick Path Picker",
         "title": "Copy Path (Files & Folders)"
       }
     ],
     "configuration": {
-      "title": "Path Picker",
+      "title": "Quick Path Picker",
       "properties": {
-        "pathPicker.pathStyle": {
+        "quickPathPicker.pathStyle": {
           "type": "string",
           "enum": [
             "relative",
@@ -39,7 +39,7 @@
           "ignoreSync": true,
           "description": "Controls if copied paths are relative to workspace root or absolute OS paths."
         },
-        "pathPicker.prefix": {
+        "quickPathPicker.prefix": {
           "type": "string",
           "default": "@",
           "scope": "application",

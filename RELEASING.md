@@ -106,12 +106,10 @@ Path Picker vX.Y.Z
 
 1. Confirm the new version is visible on the marketplace listing.
 2. Install/update in a clean VS Code profile.
-3. Run smoke test for commands:
-   - `pathPicker.copyPath`
-   - `pathPicker.copyFilePath`
-   - `pathPicker.copyFolderPath`
+3. Run smoke test:
+   - `quickPathPicker.copyPath`
 4. Verify settings still behave correctly:
-   - `pathPicker.pathStyle`
-   - `pathPicker.prefix`
+   - `quickPathPicker.pathStyle`
+   - `quickPathPicker.prefix`
 
 Release complete.

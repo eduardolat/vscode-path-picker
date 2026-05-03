@@ -1,7 +1,7 @@
 const vscode = require("vscode");
 const { buildOutputPath } = require("./path-utils");
 
-const EXTENSION_NAMESPACE = "pathPicker";
+const EXTENSION_NAMESPACE = "quickPathPicker";
 
 /**
  * Function signature used by copy flows to select a target URI.
@@ -203,7 +203,7 @@ async function runCopyFlow(pickUri) {
  */
 function activate(context) {
   context.subscriptions.push(
-    vscode.commands.registerCommand("pathPicker.copyPath", async () => {
+    vscode.commands.registerCommand("quickPathPicker.copyPath", async () => {
       await runCopyFlow(pickAnyUri);
     }),
   );

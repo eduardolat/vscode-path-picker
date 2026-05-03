@@ -1,6 +1,6 @@
-# Path Picker
+# Quick Path Picker
 
-Path Picker is a VS Code extension that lets you fuzzy-search any file or folder in your workspace and copy its path to the clipboard.
+Quick Path Picker is a VS Code extension that lets you fuzzy-search any file or folder in your workspace and copy its path to the clipboard.
 
 ## Features
 
@@ -11,25 +11,25 @@ Path Picker is a VS Code extension that lets you fuzzy-search any file or folder
 
 ## Command
 
-| Command Palette title                      | Command ID            |
-| ------------------------------------------ | --------------------- |
-| `Path Picker: Copy Path (Files & Folders)` | `pathPicker.copyPath` |
+| Command Palette title                            | Command ID                 |
+| ------------------------------------------------ | -------------------------- |
+| `Quick Path Picker: Copy Path (Files & Folders)` | `quickPathPicker.copyPath` |
 
 Run it from the Command Palette (`Cmd/Ctrl + Shift + P`) or assign a custom keyboard shortcut.
 
 ## How to use
 
 1. Open the Command Palette (`Cmd/Ctrl + Shift + P`).
-2. Run `Path Picker: Copy Path (Files & Folders)`.
+2. Run `Quick Path Picker: Copy Path (Files & Folders)`.
 3. Typing filters files and folders as you type.
 4. Select an item. The path is copied to your clipboard.
 
 ## Settings
 
-| Setting                | Values                  | Default    |
-| ---------------------- | ----------------------- | ---------- |
-| `pathPicker.pathStyle` | `relative` / `absolute` | `relative` |
-| `pathPicker.prefix`    | any string              | `@`        |
+| Setting                     | Values                  | Default    |
+| --------------------------- | ----------------------- | ---------- |
+| `quickPathPicker.pathStyle` | `relative` / `absolute` | `relative` |
+| `quickPathPicker.prefix`    | any string              | `@`        |
 
 ## Examples
 
@@ -49,7 +49,7 @@ Run it from the Command Palette (`Cmd/Ctrl + Shift + P`) or assign a custom keyb
 Here are the latest versions from the changelog (up to 5). To see all versions, go to [CHANGELOG.md](https://github.com/eduardolat/vscode-path-picker/blob/main/CHANGELOG.md).
 
 - 0.1.0 - 2026-05-03
-  - Initial release of Path Picker for VS Code.
+  - Initial release of Quick Path Picker for VS Code.
   - Added command to pick and copy file or folder paths.
   - Added support for relative and absolute output path styles.
   - Added configurable path prefix with `@` as default.
