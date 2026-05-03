@@ -1,5 +1,5 @@
 {
-  "name": "vscode-path-picker",
+  "name": "path-picker",
   "displayName": "Path Picker",
   "version": "0.1.0",
   "description": "Quickly pick a file or folder in VS Code and copy its relative or absolute path with an optional prefix",
@@ -24,17 +24,17 @@
       {
         "command": "pathPicker.copyPath",
         "category": "Path Picker",
-        "title": "Path Picker: Copy Path (File or Folder)"
+        "title": "Copy Path (File or Folder)"
       },
       {
         "command": "pathPicker.copyFilePath",
         "category": "Path Picker",
-        "title": "Path Picker: Copy File Path"
+        "title": "Copy File Path"
       },
       {
         "command": "pathPicker.copyFolderPath",
         "category": "Path Picker",
-        "title": "Path Picker: Copy Folder Path"
+        "title": "Copy Folder Path"
       }
     ],
     "configuration": {
