@@ -99,63 +99,40 @@ async function copyUriPathToClipboard(targetUri) {
 }
 
 /**
- * Shows a fuzzy search quick pick for files in the workspace.
+ * Shows a fuzzy search quick pick with files and folders combined.
  *
- * @returns {Promise<vscode.Uri | undefined>} Selected file URI, or `undefined` if cancelled.
+ * @returns {Promise<vscode.Uri | undefined>} Selected URI, or `undefined` if cancelled.
  */
-async function pickFileUri() {
+async function pickAnyUri() {
   const exclude = getExcludeGlob();
 
   const files = await vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Notification,
-      title: "Path Picker: Scanning files...",
+      title: "Path Picker: Scanning workspace...",
       cancellable: false,
     },
     () => vscode.workspace.findFiles("**/*", exclude),
   );
 
   if (files.length === 0) {
-    await vscode.window.showWarningMessage("No files found in the workspace.");
+    await vscode.window.showWarningMessage("No items found in the workspace.");
     return undefined;
   }
 
-  const items = files.map((uri) => ({
-    label: vscode.workspace.asRelativePath(uri),
-    uri,
-  }));
-
-  const selection = await vscode.window.showQuickPick(items, {
-    title: "Path Picker: Select File",
-    placeHolder: "Type to fuzzy search files...",
-  });
-
-  return selection?.uri;
-}
-
-/**
- * Shows a fuzzy search quick pick for folders in the workspace.
- *
- * @returns {Promise<vscode.Uri | undefined>} Selected folder URI, or `undefined` if cancelled.
- */
-async function pickFolderUri() {
-  const exclude = getExcludeGlob();
-
-  const files = await vscode.window.withProgress(
-    {
-      location: vscode.ProgressLocation.Notification,
-      title: "Path Picker: Scanning folders...",
-      cancellable: false,
-    },
-    () => vscode.workspace.findFiles("**/*", exclude),
-  );
-
+  const items = [];
   const folderMap = new Map();
 
   for (const file of files) {
     const relativePath = vscode.workspace.asRelativePath(file);
-    const parts = relativePath.split("/");
 
+    items.push({
+      label: `$(file) ${relativePath}`,
+      description: "File",
+      uri: file,
+    });
+
+    const parts = relativePath.split("/");
     let currentPath = "";
     for (let i = 0; i < parts.length - 1; i++) {
       currentPath += (currentPath ? "/" : "") + parts[i];
@@ -166,64 +143,25 @@ async function pickFolderUri() {
             currentPath,
             vscode.Uri.joinPath(workspaceFolder.uri, currentPath),
           );
+          items.push({
+            label: `$(folder) ${currentPath}`,
+            description: "Folder",
+            uri: folderMap.get(currentPath),
+          });
         }
       }
     }
   }
 
-  if (folderMap.size === 0) {
-    await vscode.window.showWarningMessage(
-      "No folders found in the workspace.",
-    );
-    return undefined;
-  }
-
-  const items = Array.from(folderMap.entries()).map(([path, uri]) => ({
-    label: path,
-    uri,
-  }));
+  items.sort((a, b) => a.label.localeCompare(b.label));
 
   const selection = await vscode.window.showQuickPick(items, {
-    title: "Path Picker: Select Folder",
-    placeHolder: "Type to fuzzy search folders...",
+    title: "Path Picker: Select File or Folder",
+    placeHolder: "Type to search anything in the workspace...",
+    matchOnDescription: true,
   });
 
   return selection?.uri;
-}
-
-/**
- * Prompts the user to choose between file and folder selection,
- * then returns a URI from the corresponding picker.
- *
- * @returns {Promise<vscode.Uri | undefined>} Selected URI, or `undefined` if cancelled.
- */
-async function pickPathUri() {
-  const quickPick = await vscode.window.showQuickPick(
-    [
-      {
-        label: "$(file) File",
-        value: "file",
-      },
-      {
-        label: "$(folder) Folder",
-        value: "folder",
-      },
-    ],
-    {
-      title: "Path Picker",
-      placeHolder: "Choose what you want to search",
-    },
-  );
-
-  if (!quickPick) {
-    return undefined;
-  }
-
-  if (quickPick.value === "folder") {
-    return pickFolderUri();
-  }
-
-  return pickFileUri();
 }
 
 /**
@@ -265,20 +203,14 @@ async function runCopyFlow(pickUri) {
  */
 function activate(context) {
   context.subscriptions.push(
-    vscode.commands.registerCommand("pathPicker.copyFilePath", async () => {
-      await runCopyFlow(pickFileUri);
-    }),
-  );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand("pathPicker.copyFolderPath", async () => {
-      await runCopyFlow(pickFolderUri);
-    }),
-  );
-
-  context.subscriptions.push(
     vscode.commands.registerCommand("pathPicker.copyPath", async () => {
-      await runCopyFlow(pickPathUri);
+      await runCopyFlow(pickAnyUri);
+    }),
+    vscode.commands.registerCommand("pathPicker.copyFilePath", async () => {
+      await runCopyFlow(pickAnyUri);
+    }),
+    vscode.commands.registerCommand("pathPicker.copyFolderPath", async () => {
+      await runCopyFlow(pickAnyUri);
     }),
   );
 }
