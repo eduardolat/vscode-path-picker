@@ -2,7 +2,7 @@
   "name": "path-picker",
   "displayName": "Path Picker",
   "version": "0.1.0",
-  "description": "Quickly pick a file or folder in VS Code and copy its relative or absolute path with an optional prefix",
+  "description": "Fuzzy-search any file or folder in your workspace and copy its relative or absolute path with an optional prefix",
   "icon": "./assets/logo.png",
   "main": "./dist/extension.js",
   "engines": {
@@ -12,9 +12,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:pathPicker.copyPath",
-    "onCommand:pathPicker.copyFilePath",
-    "onCommand:pathPicker.copyFolderPath"
+    "onCommand:pathPicker.copyPath"
   ],
   "extensionKind": [
     "ui"
@@ -24,17 +22,7 @@
       {
         "command": "pathPicker.copyPath",
         "category": "Path Picker",
-        "title": "Copy Path (File or Folder)"
-      },
-      {
-        "command": "pathPicker.copyFilePath",
-        "category": "Path Picker",
-        "title": "Copy File Path"
-      },
-      {
-        "command": "pathPicker.copyFolderPath",
-        "category": "Path Picker",
-        "title": "Copy Folder Path"
+        "title": "Copy Path (Files & Folders)"
       }
     ],
     "configuration": {
