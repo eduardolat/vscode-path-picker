@@ -46,7 +46,7 @@ Run it from the Command Palette (`Cmd/Ctrl + Shift + P`) or assign a custom keyb
 
 ## Changelog
 
-Here are the latest versions from the changelog (up to 5). To see all versions, go to [CHANGELOG.md](https://github.com/eduardolat/vscode-path-picker/blob/main/CHANGELOG.md).
+Here are the latest versions from the changelog (up to 5). To see all versions, go to [CHANGELOG.md](https://github.com/eduardolat/vscode-quick-path-picker/blob/main/CHANGELOG.md).
 
 - 0.1.0 - 2026-05-03
   - Initial release of Quick Path Picker for VS Code.

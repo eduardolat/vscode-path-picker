@@ -83,7 +83,7 @@ Path Picker vX.Y.Z
 - Change 2
 - Change 3
 
-**Full Changelog**: https://github.com/eduardolat/vscode-path-picker/compare/vPREVIOUS...vX.Y.Z
+**Full Changelog**: https://github.com/eduardolat/vscode-quick-path-picker/compare/vPREVIOUS...vX.Y.Z
 ```
 
 ## 5) Publish the extension

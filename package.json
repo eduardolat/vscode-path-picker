@@ -51,7 +51,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eduardolat/vscode-path-picker.git"
+    "url": "git+https://github.com/eduardolat/vscode-quick-path-picker.git"
   },
   "keywords": [
     "absolute path",
@@ -80,9 +80,9 @@
   "license": "MIT",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/eduardolat/vscode-path-picker/issues"
+    "url": "https://github.com/eduardolat/vscode-quick-path-picker/issues"
   },
-  "homepage": "https://github.com/eduardolat/vscode-path-picker#readme",
+  "homepage": "https://github.com/eduardolat/vscode-quick-path-picker#readme",
   "scripts": {
     "dev": "rm -rf ./dist && node esbuild.js --watch",
     "build": "rm -rf ./dist && node esbuild.js --production",
